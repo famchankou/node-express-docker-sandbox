@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+
+  api:
+    build:
+      context: ./api
+    environment:
+      - DATABASE=test
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_HOST=postgres
+    # Expose the api service on localhost:8080,
+    # so you can test it from your machine as well.
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test
+
+  test:
+    build:
+      context: ./test
+    environment:
+      API_URL: "http://api:8080"
+    command: dockerize -wait http://api:8080 npm test

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "dependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.3.2"
+  }
+}

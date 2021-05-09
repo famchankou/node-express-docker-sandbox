@@ -1,0 +1,220 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger Paragraps/Sentences"
+  },
+  "host": "0.0.0.0:8080",
+  "basePath": "",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Reachable healthcheck",
+        "operationId": "healthcheck",
+        "responses": {
+          "200": {
+            "description": "Empty response"
+          }
+        }
+      }
+    },
+    "/paragraph/{slug}": {
+      "get": {
+        "summary": "Get existing paragraph with sentences",
+        "operationId": "getParagraph",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The paragraph unique identificator",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Existing paragraph",
+            "schema": {
+              "$ref": "#/definitions/Paragraph"
+            }
+          },
+          "404": {
+            "description": "Paragraph not found"
+          },
+          "400": {
+            "description": "Request error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a paragraph",
+        "operationId": "createParagraph",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Paragraph",
+            "description": "The number of sentences in a paragraph",
+            "schema": {
+              "type": "object",
+              "required": [
+                "numSentences"
+              ],
+              "properties": {
+                "numSentences": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The paragraph unique identificator",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created paragraph object",
+            "schema": {
+              "$ref": "#/definitions/Paragraph"
+            }
+          },
+          "400": {
+            "description": "Request error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a paragraph",
+        "operationId": "deleteParagraph",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The paragraph unique identificator",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An empty response on successfull delete"
+          },
+          "404": {
+            "description": "Paragraph being deleted not found"
+          },
+          "400": {
+            "description": "Request error"
+          }
+        }
+      }
+    },
+    "/paragraph/{slug}/sentence/{id}": {
+      "post": {
+        "summary": "Add a sentence to a paragraph",
+        "operationId": "addSentence",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Sentence",
+            "description": "Paragraph sentence",
+            "schema": {
+              "type": "object",
+              "required": [
+                "sentence"
+              ],
+              "properties": {
+                "sentence": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The paragraph unique identificator",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The sentence id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated paragraph with a new sentence",
+            "schema": {
+              "$ref": "#/definitions/Paragraph"
+            }
+          },
+          "404": {
+            "description": "Paragraph not found"
+          },
+          "400": {
+            "description": "Request error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a sentence from a paragraph",
+        "operationId": "deleteSentence",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The paragraph unique identificator",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The sentence id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An empty response on successfull sentence add"
+          },
+          "400": {
+            "description": "Request error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Paragraph": {
+      "properties": {
+        "complete": {
+          "type": "boolean",
+          "default": false
+        },
+        "sentences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
